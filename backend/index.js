@@ -22,9 +22,12 @@ import userRoute from './routes/users.js';
 import authMiddleware from './middleware/middleware.js';
 import initSocket from './socket/server.js';
 
-const port = process.env.PORT_NUMBER | 3000;
+const port = process.env.PORT_NUMBER || 3000;
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin : process.env.FRONTEND_URL,
+    methods : ["GET", "POST"]
+}));
 
 connectDB()
 
