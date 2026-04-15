@@ -20,7 +20,7 @@ export default function initSocket(io) {
     }
     io.on('connection', async (socket) => {
         try {
-            const {myUserId : userId, cafeId, username} = socket.handshake.query;
+            const {myUserId : userId, cafeId, username} = socket.handshake.auth;
             if (!username || !userId || !cafeId || cafeId === "undefined") {
                 socket.disconnect();
                 return;

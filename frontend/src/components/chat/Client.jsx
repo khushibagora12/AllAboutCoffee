@@ -38,13 +38,10 @@ export default function Client({ cafeId }) {
         socket.current = io(import.meta.env.VITE_BACKEND_URL, {
             "auth": {
                 "token": localStorage.getItem('token'),
-
-            },
-            "query": {
                 "myUserId": localStorage.getItem('userId'),
                 "username": localStorage.getItem('username'),
                 "cafeId": cafeId
-            }
+            },
         })
 
         socket.current.on('connect', () => {
