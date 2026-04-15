@@ -1,0 +1,167 @@
+/* ── Hero ── */
+.cd-hero {
+  background: #9a5b39;
+  padding: 26px 22px 52px;
+  position: relative;
+  overflow: hidden;
+}
+.cd-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 32px;
+  background: #f5f0ea;
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.cd-hero-c1 {
+  position: absolute; width: 160px; height: 160px;
+  border-radius: 50%; background: rgba(255,255,255,0.07);
+  top: -50px; right: -40px;
+}
+.cd-hero-c2 {
+  position: absolute; width: 90px; height: 90px;
+  border-radius: 50%; background: rgba(255,255,255,0.05);
+  bottom: -20px; left: 20px;
+}
+.cd-hero-title {
+  font-family: Georgia, serif;
+  font-size: 22px; font-weight: 700;
+  color: #fff; position: relative; z-index: 1;
+}
+.cd-hero-sub {
+  display: flex; align-items: center; gap: 6px;
+  color: rgba(255,255,255,0.75);
+  font-size: 12px; margin-top: 5px;
+  position: relative; z-index: 1;
+}
+.cd-hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 20px; padding: 5px 13px;
+  color: #fff; font-size: 12px; font-weight: 600;
+  margin-top: 14px; position: relative; z-index: 1;
+}
+
+/* ── Filter chips ── */
+.cd-chips {
+  display: flex; gap: 8px;
+  padding: 16px 20px 4px;
+  overflow-x: auto; scrollbar-width: none;
+  background: #f5f0ea;
+}
+.cd-chips::-webkit-scrollbar { display: none; }
+.cd-chip {
+  flex-shrink: 0; white-space: nowrap;
+  padding: 6px 16px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1.5px solid rgba(154,91,57,0.22);
+  background: #fff; color: #7a4a30;
+  transition: all 0.2s;
+}
+.cd-chip.on { background: #9a5b39; color: #fff; border-color: #9a5b39; }
+
+/* ── Count ── */
+.cd-count {
+  padding: 14px 22px 10px;
+  font-size: 13px; color: #9a7060;
+  background: #f5f0ea;
+}
+.cd-count strong { color: #3D2C22; font-weight: 700; }
+
+/* ── List ── */
+.cd-list {
+  background: #f5f0ea;
+  padding: 0 16px 40px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+/* ── Card ── */
+.cd-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid rgba(154,91,57,0.1);
+  display: flex; overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: cdFadeUp 0.4s ease both;
+}
+.cd-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(154,91,57,0.1);
+}
+@keyframes cdFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cd-card-img {
+  flex-shrink: 0;
+  width: 108px; height: 108px;
+  overflow: hidden;
+}
+.cd-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+.cd-card-body {
+  flex: 1;
+  padding: 14px 10px 14px 14px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.cd-card-name {
+  font-weight: 700; font-size: 14px;
+  color: #3D2C22; margin-bottom: 4px;
+}
+.cd-card-addr {
+  font-size: 11px; color: #9a7060; line-height: 1.45;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cd-card-footer { display: flex; align-items: center; gap: 8px; }
+.cd-rating {
+  display: flex; align-items: center; gap: 4px;
+  background: #faeeda; border-radius: 10px;
+  padding: 3px 9px;
+  font-size: 12px; font-weight: 700; color: #854F0B;
+}
+
+/* ── Arrow ── */
+.cd-card-arrow {
+  display: flex; align-items: center;
+  padding: 0 14px 0 6px; flex-shrink: 0;
+}
+.cd-arrow-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #f5ede5;
+  border: 1.5px solid rgba(154,91,57,0.2);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.cd-card:hover .cd-arrow-btn { background: #9a5b39; }
+.cd-card:hover .cd-arrow-btn path { stroke: #fff; }
+
+/* ── Back button ── */
+.cd-back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 20px 16px;
+  padding: 10px 20px;
+  background: #fff;
+  border: 1.5px solid rgba(154,91,57,0.25);
+  border-radius: 12px;
+  color: #9a5b39; font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background 0.2s;
+}
+.cd-back-btn:hover { background: #f5ede5; }
+
+/* ── Error ── */
+.cd-error {
+  text-align: center; padding: 40px;
+  color: #9a7060; font-size: 15px;
+}

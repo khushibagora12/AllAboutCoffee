@@ -1,0 +1,38 @@
+/* fonts */
+.nautigal {
+  font-family: "The Nautigal", cursive;
+  font-weight: 700;
+  font-style: normal;
+}
+.playfair{
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+.great-vibes {
+  font-family: "Great Vibes", cursive;
+  font-weight:600;
+  font-style: normal;
+}
+.cinzel {
+  font-family: "Cinzel", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.allura {
+  font-family: "Allura", cursive;
+  font-weight: 500;
+  font-style: normal;
+}
+.fascinate {
+  font-family: "Fascinate", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.aboreto {
+  font-family: "Aboreto", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
