@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Cafe from './cafe';
 import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom'
+import { useRef } from 'react';
 
 export default function CafeData() {
     const [cafes, setCafes] = useState([]);
@@ -8,6 +10,9 @@ export default function CafeData() {
     const [cafe, setCafe] = useState(false);
     const [props, setProps] = useState({});
     const [filter, setFilter] = useState('all');
+
+    const socket = new useRef(null);
+    const navigate = useNavigate()
 
     useEffect(() => {
         setToken(localStorage.getItem('token'));
@@ -87,14 +92,23 @@ export default function CafeData() {
         if (filter === 'rated') return [...cafes].sort((a, b) => b.rating - a.rating);
         return cafes;
     }
+    const logoutHandler = () => {
+        localStorage.setItem('token', '');
+        localStorage.setItem('username', '');
+        localStorage.setItem('userId', '');
+        navigate('/Signin')
+    }
     if (token) {
         return (
             <>
                 
                 <div className={cafe ? 'hidden' : ''}>
                     <div className="cd-hero">
+                        
                         <div className="cd-hero-c1" />
                         <div className="cd-hero-c2" />
+                        <button className="logout-btn" onClick={() => logoutHandler()}>Logout</button>
+
                         <h2 className="cd-hero-title">Cafés near you</h2>
                         <div className="cd-hero-badge">
                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -103,6 +117,7 @@ export default function CafeData() {
                             </svg>
                             Within 2 km · Updated just now
                         </div>
+
                     </div>
 
                     {/* normal or sorted */}
@@ -151,9 +166,14 @@ export default function CafeData() {
 
                 
                 {cafe && (<div className={cafe ? '' : 'hidden'}>
-                    <Cafe cafe={props} />
+                    <Cafe cafe={props} socket={socket.current}/>
                     <button className="cd-back-btn" onClick={() => {
                         setCafe(false)
+                        if(socket.current){
+                            socket.current.emit('leave-cafe', {cafeId : socket.cafeId});
+                            socket.current.disconnect();
+                            console.log("leave cafe")
+                        }
                     }}>
                         <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
                             <path d="M11 7H3M7 3L3 7l4 4" stroke="#9a5b39" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -166,5 +186,5 @@ export default function CafeData() {
             </>
         )
     }
-    return (<p>Something is wrong</p>)
+    return (<p>You are not logged in</p>)
 }

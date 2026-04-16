@@ -14,7 +14,7 @@ const avatarColors = [
 const getAvatarStyle = (name = '') => avatarColors[(name.charCodeAt(0) || 0) % avatarColors.length];
 const getInitials = (name = '') => (name || '??').slice(0, 2).toUpperCase();
 
-export default function Client({ cafeId }) {
+export default function Client({ cafeId, socket }) {
     const [msg, setMsg] = useState('');
     const [messages, setMessages] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
@@ -25,7 +25,7 @@ export default function Client({ cafeId }) {
     const [requests, setRequests] = useState([]);
     const [showReq, setShowReq] = useState(false);
 
-    const socket = useRef(null);
+    // const socket = useRef(null);
     console.log("cafe id: ", cafeId);
 
     //socket
@@ -43,6 +43,7 @@ export default function Client({ cafeId }) {
                 "cafeId": cafeId
             },
         })
+        socket.current.cafeId = cafeId;
 
         socket.current.on('connect', () => {
             console.log("connected to server");

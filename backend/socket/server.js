@@ -1,13 +1,13 @@
 
 export default function initSocket(io) {
-    function sendUsers(cafeId){
+    function sendUsers(cafeId) {
         const users = [];
         const room = io.sockets.adapter.rooms.get(cafeId);
 
         if (room) {
             for (const socketId of room) {
                 const clientSocket = io.sockets.sockets.get(socketId);
-                if(clientSocket && clientSocket.userId && clientSocket.username){
+                if (clientSocket && clientSocket.userId && clientSocket.username) {
                     users.push({
                         userId: clientSocket.userId,
                         username: clientSocket.username
@@ -20,14 +20,14 @@ export default function initSocket(io) {
     }
     io.on('connection', async (socket) => {
         try {
-            const {myUserId : userId, cafeId, username} = socket.handshake.auth;
+            const { myUserId: userId, cafeId, username } = socket.handshake.auth;
             if (!username || !userId || !cafeId || cafeId === "undefined") {
                 socket.disconnect();
                 return;
             }
             console.log('joining cafe: ', cafeId, " user: ", userId)
             console.log("rooms: ", socket.rooms)
-            if(socket.cafeId){
+            if (socket.cafeId) {
                 socket.leave(socket.cafeId);
             }
             socket.username = username;
@@ -38,29 +38,37 @@ export default function initSocket(io) {
             socket.join(userId);
             console.log('connected: ', username, " in: ", cafeId)
             sendUsers(cafeId);
-            
-            socket.on('request', ({chatWith}) => {
 
-                io.to(chatWith).emit('request', {username : socket.username, id : socket.userId});
+            socket.on('request', ({ chatWith }) => {
+
+                io.to(chatWith).emit('request', { username: socket.username, id: socket.userId });
 
             })
-            socket.on('response', ({chatWith, status}) => {
+            socket.on('response', ({ chatWith, status }) => {
                 console.log('res: ', status)
                 io.to(chatWith).emit('response', status);
 
             })
-            socket.on('message', ({msg, chatWith}) => {
+            socket.on('message', ({ msg, chatWith }) => {
 
-                io.to(chatWith).emit('message',  {msg, senderId: socket.userId});
+                io.to(chatWith).emit('message', { msg, senderId: socket.userId });
 
             })
-            socket.on('chatDisconnect', ({chatWith}) => {
+            socket.on('chatDisconnect', ({ chatWith }) => {
                 console.log("chat disconnected")
                 io.to(chatWith).emit('chatDisconnect');
             })
+            socket.on('leave-cafe', ({ cafeId }) => {
+
+                socket.leave(cafeId)
+                if (socket.cafeId === cafeId) {
+                    socket.cafeId = null;
+                }
+                sendUsers(cafeId)
+            })
             socket.on('disconnect', () => {
                 console.log('disconnected: ', username)
-                sendUsers(socket.cafeId)
+                if(socket.cafeId) sendUsers(socket.cafeId)
             })
         }
         catch (err) {

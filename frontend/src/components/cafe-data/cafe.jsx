@@ -2,7 +2,7 @@ import { useState } from "react"
 import { MapPin } from 'lucide-react';
 import Client from "../chat/Client";
 
-export default function Cafe({cafe}) {
+export default function Cafe({cafe, socket}) {
     const [imgNo, setImgNo] = useState(0);
     const totalPhotos = cafe?.photos?.length || 1;
 
@@ -82,7 +82,7 @@ export default function Cafe({cafe}) {
             </div>
             <p className="section-sub">Send a request to chat in real time with fellow café goers</p>
  
-            {cafe?.id && <Client cafeId={cafe?.id} />}
+            {cafe?.id && <Client cafeId={cafe?.id} socket={socket}/>}
         </div>
         </>
     )
