@@ -166,7 +166,7 @@ export default function CafeData() {
 
                 
                 {cafe && (<div className={cafe ? '' : 'hidden'}>
-                    <Cafe cafe={props} socket={socket.current}/>
+                    <Cafe cafe={props} socket={socket}/>
                     <button className="cd-back-btn" onClick={() => {
                         setCafe(false)
                         if(socket.current){
