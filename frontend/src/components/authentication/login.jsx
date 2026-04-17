@@ -8,6 +8,7 @@ export default function Signin() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [text, setText] = useState('Sign In')
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -22,12 +23,7 @@ export default function Signin() {
             }
         }
         );
-        console.log(user);
-        console.log(user.data);
-        console.log(user.data.token);
-        console.log(user.data.userId);
-
-
+        
         localStorage.setItem('token', user.data.token);
         localStorage.setItem('userId', user.data.userId);
         localStorage.setItem('username', user.data.username);
@@ -41,6 +37,7 @@ export default function Signin() {
         }
         setEmail('');
         setPassword('');
+        setText('Sign In')
     }
     return (
         <>
@@ -112,14 +109,17 @@ export default function Signin() {
                         </div>
 
 
-                        <button className="auth-submit" onClick={submitHandler}>
+                        <button className="auth-submit" onClick={(e) => {
+                            submitHandler(e);
+                            setText('Signing In...');
+                        }}>
                             <svg className="btn-wave bw1" viewBox="0 0 640 30" preserveAspectRatio="none">
                                 <path d="M0,15 C60,0 120,28 180,15 C240,2 300,28 360,15 C420,2 480,28 540,15 C580,6 620,20 640,15 L640,30 L0,30 Z" fill="rgba(255,255,255,0.1)" />
                             </svg>
                             <svg className="btn-wave bw2" viewBox="0 0 640 30" preserveAspectRatio="none">
                                 <path d="M0,15 C80,28 160,4 240,15 C320,26 400,4 480,15 C540,22 600,10 640,15 L640,30 L0,30 Z" fill="rgba(255,255,255,0.08)" />
                             </svg>
-                            <span className="btn-label">Sign In</span>
+                            <span className="btn-label">{text}</span>
                         </button>
 
                         <div className="auth-footer">

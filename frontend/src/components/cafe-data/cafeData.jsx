@@ -77,7 +77,7 @@ export default function CafeData() {
                     maxResultCount: 10, // n most popular matches
                 };
                 const { places } = await Place.searchNearby(request);
-                console.log("places: ", places)
+                // console.log("places: ", places)
                 setCafes(places)
 
             },

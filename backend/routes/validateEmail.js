@@ -12,13 +12,13 @@ router.post('/validate', async (req, res) => {
             port: 465,
             secure: true,
             auth: {
-                user: 'khushibagora76@gmail.com',
-                pass: 'hsxa gjgo aojy ddrh',
+                user: process.env.EMAIL_FROM,
+                pass: process.env.EMAIL_PASS,
             },
         });
         // const subject = `Your number is ${number}. Enter this on the app`;
         const options = {
-            from: 'bagorakhushi327@gmail.com',
+            from: process.env.EMAIL_FROM,
             to: [their_email],
             subject: "validation number",
             html: email,
