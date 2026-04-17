@@ -1,40 +1,27 @@
 import { useState } from "react"
-import axios from "axios";
+// import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Validate from "./validate";
 
 export default function Signup() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userValidate, setUservalidate] = useState(false);
+  const [user, setUser] = useState(null);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log('in submit handler');
-
-    const user = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/routes/auth/signup`, {
+    setUser({
       username: username,
       email: email,
       password: password
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-    );
-    toast(user.data.message);
-    console.log(user);
-    setUsername('');
-    setEmail('');
-    setPassword('');
-    if (user.data.message === "User created successfully") {
-      setTimeout(() => {
-        navigate('/Signin');
-      }, 1000);
-    }
+    })
+    setUservalidate(true)
   }
-  return (
+  if(!userValidate) return (
     <>
       <div className="auth-page">
         <div className="auth-card">
@@ -138,4 +125,12 @@ export default function Signup() {
       <ToastContainer />
     </>
   )
+  else{
+    return(
+      <Validate user={user} setUserValidate={setUservalidate} 
+      setUsername={setUsername}
+      setEmail={setEmail}
+      setPassword={setPassword}/>
+    )
+  }
 }

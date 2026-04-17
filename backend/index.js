@@ -21,16 +21,17 @@ import authRoutes from './routes/auth.js';
 import userRoute from './routes/users.js';
 import authMiddleware from './middleware/middleware.js';
 import initSocket from './socket/server.js';
+import validate from './routes/validateEmail.js'
 
 const port = process.env.PORT_NUMBER || 3000;
 app.use(express.json());
-app.use(cors({
-    origin : process.env.FRONTEND_URL,
-    methods : ["GET", "POST"]
-}));
+    app.use(cors({
+        origin : process.env.FRONTEND_URL,
+        methods : ["GET", "POST"]
+    }));
 
 connectDB()
-
+app.use("/routes/validateEmail", validate)
 app.use("/routes/auth", authRoutes)
 
 app.use(authMiddleware)
