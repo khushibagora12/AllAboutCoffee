@@ -1,7 +1,6 @@
 import { Router } from 'express';
 const router = Router();
 import nodemailer from 'nodemailer';
-import { createClient } from "redis";
 import { z } from 'zod';
 import client from './redisClient.js';
 
@@ -23,9 +22,6 @@ router.post('/validate', async (req, res) => {
     console.log('got request')
     try {
         const { username, email, password } = req.body;
-        // console.log("username", username)
-        // console.log("email", email)
-        // console.log("password", password)
 
         const parsed = signupFormat.safeParse({ username, email, password });
         if (!parsed.success) {
