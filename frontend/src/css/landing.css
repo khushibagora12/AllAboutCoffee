@@ -246,7 +246,7 @@
   justify-content: center;
   padding: 80px 16px 32px;
   font-family: 'Segoe UI', Georgia, sans-serif;
-  overflow: hidden; 
+  overflow:visible; 
 }
 
 /* ── Card ── */
@@ -481,4 +481,15 @@ t a:hover { text-decoration: underline; }
   .auth-body  { padding: 6px 20px 24px; }
   .auth-top   { padding: 28px 20px 44px; }
   .auth-title { font-size: 20px; }
+}
+.auth-google-wrap {
+  margin: 16px 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Divider above it ── */
+.auth-google-wrap::before {
+  content: '';
 }

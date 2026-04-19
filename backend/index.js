@@ -22,6 +22,7 @@ import userRoute from './routes/users.js';
 import authMiddleware from './middleware/middleware.js';
 import initSocket from './socket/server.js';
 import validate from './routes/validateEmail.js'
+import matchEmail from './routes/validateEmail.js'
 
 const port = process.env.PORT_NUMBER || 3000;
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use(express.json());
 
 connectDB()
 app.use("/routes/validateEmail", validate)
+app.use("/routes/validateEmail", matchEmail)
 app.use("/routes/auth", authRoutes)
 
 app.use(authMiddleware)

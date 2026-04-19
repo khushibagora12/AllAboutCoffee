@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { User } from '../db/DB.js';
-import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -10,27 +9,50 @@ const JWT_SECRET = process.env.JWT_SECRET;
 import { Router } from "express";
 const router = Router()
 
-const signupFormat = z.object({
-    username: z.string({ error: (iss) => iss.input === undefined ? "Field is required." : "Invalid input."})
-    .min(3, { error: (iss) => `Username must have ${iss.minimum} characters or more` }),
-    email: z.string().email({ error: "Invalid email"}),
-    password: z.string({
-        error: (iss) => iss.input === undefined ? "Field is required." : "Invalid input."
-    })
-    .min(8, {error : "Password must be at least 8 characters"})
-    .regex(/[a-z]/, {error : "Password must contain at least one small letter"})
-    .regex(/[A-Z]/, {error : "Password must contain at least one capital letter"})
-    .regex(/[0-9]/, {error : "Password must contain at least one number"})
-    .regex(/[@#$&]/, {error : "Password must contain a special character (@#$&)"})
+import { OAuth2Client } from 'google-auth-library';
+const client = new OAuth2Client();
+
+router.post('/google_auth', async (req, res) => {
+    const { credential, client_id } = req.body;
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: client_id,
+        });
+        const payload = ticket.getPayload();
+        const userid = payload['sub'];
+        console.log("payload: ", payload)
+
+        const username = payload.name;
+        const email = payload.email;
+        const password = payload.sub;
+        const isVerified = payload.email_verified;
+
+        if (isVerified) {
+            const user = await User.findOne({ email: email });
+            if (user) {
+                const token = await jwt.sign({ id: user._id.toString() }, JWT_SECRET, { expiresIn: '12h' });
+                res.json({ message: 'Logged in successfully', token: token, userId: user._id.toString(), username: user.username });
+                return;
+            } else {
+                const hashedPassword = await bcrypt.hash(password, 10);
+                const newUser = await User.create({
+                    username,
+                    email,
+                    password: hashedPassword
+                });
+                if (newUser)
+                    return res.json({ message: 'User created successfully' });
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
 })
 router.post('/signup', async (req, res) => {
     try {
         const { username, email, password } = req.body;
-        console.log(username, username.length)
-        const parsed = signupFormat.safeParse({username, email, password});
-        if(!parsed.success){
-            return res.json({'message' : parsed.error.issues[0].message})
-        }
         const user = await User.findOne({ email: email });
         if (user) {
             res.json({ message: 'User already exists' });

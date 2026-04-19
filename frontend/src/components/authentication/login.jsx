@@ -2,6 +2,7 @@ import { useState } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import AuthWithGoogle from "./withGoogle";
 
 export default function Signin() {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function Signin() {
             }
         }
         );
-        
+
         localStorage.setItem('token', user.data.token);
         localStorage.setItem('userId', user.data.userId);
         localStorage.setItem('username', user.data.username);
@@ -121,7 +122,9 @@ export default function Signin() {
                             </svg>
                             <span className="btn-label">{text}</span>
                         </button>
-
+                        <div className="auth-google-wrap">
+                            <AuthWithGoogle />
+                        </div>
                         <div className="auth-footer">
                             New here? <a onClick={() => navigate('/Signup')}>Create an account</a>
                         </div>

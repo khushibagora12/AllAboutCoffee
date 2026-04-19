@@ -1,27 +1,41 @@
 import { useState } from "react"
-// import axios from "axios";
+import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Validate from "./validate";
+import AuthWithGoogle from "./withGoogle";
 
 export default function Signup() {
   const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userValidate, setUservalidate] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const submitHandler = async () => {
     setUser({
       username: username,
       email: email,
       password: password
     })
-    setUservalidate(true)
+
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/routes/validateEmail/validate`, {
+      username: username,
+      email: email,
+      password: password
+    },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    if (res.data.message === "Number sent to email") setUservalidate(true)
+
+    toast(res.data.message)
   }
-  if(!userValidate) return (
+  if (!userValidate) return (
     <>
       <div className="auth-page">
         <div className="auth-card">
@@ -116,6 +130,10 @@ export default function Signup() {
               <span className="btn-label">Create Account</span>
             </button>
 
+            <div className="auth-google-wrap">
+              <AuthWithGoogle />
+            </div>
+
             <div className="auth-footer">
               Already have an account? <a onClick={() => navigate('/Signin')}>Sign in</a>
             </div>
@@ -125,12 +143,9 @@ export default function Signup() {
       <ToastContainer />
     </>
   )
-  else{
-    return(
-      <Validate user={user} setUserValidate={setUservalidate} 
-      setUsername={setUsername}
-      setEmail={setEmail}
-      setPassword={setPassword}/>
+  else {
+    return (
+      <Validate user={user} setUserValidate={setUservalidate} />
     )
   }
 }
