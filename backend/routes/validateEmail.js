@@ -55,9 +55,7 @@ router.post('/validate', async (req, res) => {
     } catch (e) {
         console.log(e)
     }
-    finally{
-        await client.close()
-    }
+
 })
 
 router.post(('/matchEmail'), async (req, res) => {
@@ -75,9 +73,6 @@ router.post(('/matchEmail'), async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-    }
-    finally{
-        await client.close()
     }
 })
 export default router;
